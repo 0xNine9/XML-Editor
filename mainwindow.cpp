@@ -16,10 +16,10 @@ MainWindow::~MainWindow()
 }
 
 
+
 void MainWindow::on_actionNew_triggered()
 {
     currentFile.clear();
-    ui->textEdit->setPlaceholderText(QString("Write XML Here..."));
-
+    ui->textEdit->setPlaceholderText(QString("Write Your New XML here"));
 }
 
