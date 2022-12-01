@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Compress.png</file>
+        <file>Exit.png</file>
+        <file>JSON.png</file>
+        <file>Open.png</file>
+        <file>SaveAs.png</file>
+        <file>Save_icon.png</file>
+        <file>Format.png</file>
+        <file>about.png</file>
+        <file>New.png</file>
+    </qresource>
+</RCC>
