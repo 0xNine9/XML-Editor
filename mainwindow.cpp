@@ -60,3 +60,37 @@ void MainWindow::on_actionOpen_triggered()
 }
 
 
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    // Opens a dialog for saving a file
+        QString fileName = QFileDialog::getSaveFileName(this, "Save as");
+
+        // An object for reading and writing files
+        QFile file(fileName);
+
+        // Try to open a file with write only options
+        if (!file.open(QFile::WriteOnly | QFile::Text)) {
+            QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
+            return;
+        }
+
+        // Store the currentFile name
+        currentFile = fileName;
+
+        // Set the title for the window to the file name
+        setWindowTitle(fileName);
+
+        // Interface for writing text
+        QTextStream out(&file);
+
+        // Copy text in the textEdit widget and convert to plain text
+        QString text = ui->textEdit->toPlainText();
+
+        // Output to file
+        out << text;
+
+        // Close the file
+        file.close();
+}
+
