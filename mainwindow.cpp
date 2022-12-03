@@ -94,3 +94,9 @@ void MainWindow::on_actionSave_As_triggered()
         file.close();
 }
 
+
+void MainWindow::on_actionExit_triggered()
+{
+    QApplication:: quit();
+}
+
