@@ -89,14 +89,28 @@ void MainWindow::on_actionSave_As_triggered()
 
         // Output to file
         out << text;
+        statusBar()->showMessage("file saved", 2000);
 
         // Close the file
         file.close();
 }
 
-
+void MainWindow::on_actionSave_triggered()
+{
+       QFile file(currentFile);
+       if (!file.open(QFile::WriteOnly | QFile::Text)) {
+           QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
+           return;
+       }
+       QTextStream out(&file);
+       out << ui->textEdit->toPlainText();
+       statusBar()->showMessage("file saved", 2000);
+}
 void MainWindow::on_actionExit_triggered()
 {
     QApplication:: quit();
 }
+
+
+
 
