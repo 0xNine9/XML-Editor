@@ -146,5 +146,64 @@ void MainWindow::on_actionConvert_to_JSON_triggered()
 }
 
 
+void MainWindow::on_actionFormat_triggered()
+{
+    if(currentFile == ""){
+        // Opens a dialog that allows you to select a file to open
+            QString fileName = QFileDialog::getOpenFileName(this, "Choose a file");
 
+            // An object for reading and writing files
+            QFile file(fileName);
+
+            // Store the currentFile name
+            currentFile = fileName;
+
+            // Try to open the file as a read only file if possible or display a
+            // warning dialog box
+            if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+                QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
+                return;
+            }
+
+            // Set the title for the window to the file name
+            setWindowTitle(fileName);
+
+            // Interface for reading text
+            QTextStream in(&file);
+
+            // Copy text in the string
+            QString text = in.readAll();
+
+            QByteArray array = currentFile.toLocal8Bit();
+                const char *buffer = array.data();
+                QString textf = QString::fromStdString(xml_formatter(buffer));
+                ui->textEdit->setText(textf);
+
+            // Close the file
+            file.close();
+    }
+        QByteArray array = currentFile.toLocal8Bit();
+            const char *buffer = array.data();
+            QString text = QString::fromStdString(xml_formatter(buffer));
+            ui->textEdit->setText(text);
+}
+
+
+void MainWindow::on_actionCheck_triggered()
+{
+    if(currentFile == ""){
+        ui->textEdit->setText("<font color=\"#0008F0\"> Error: <font color=\"#000000\"> You have not opened a file");
+            return;
+        }
+        bool read;
+        string folder = currentFile.toLocal8Bit().constData();
+        vector<string> str = fileReader(&read, folder);
+        vector<QString> value = consistencyCheckCorrect(str);
+        if(value[0].size() == 0)
+            ui->textEdit->setText("<font color=\"#0008F0\"> Error: <font color=\"#000000\"> There were no errors to be corrected");
+        else
+            ui->textEdit->setText(value[0]);
+        ui->textEdit->setText(value[1]);
+
+}
 

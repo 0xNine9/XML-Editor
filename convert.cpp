@@ -1,5 +1,5 @@
 #include "convert.h"
-#include <QString>
+#include <string>
 
 using namespace std;
 
@@ -15,7 +15,8 @@ string readFileIntoString(const string& path) {
 	}
 	return string((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
 }
-// generating XML tree (Dom-tree)
+
+
 Node* Parse_XML(const string XML_content) {
 	// store the root node in order to delete all the nodes after parsing 
 	Node* root = new Node();
@@ -103,83 +104,40 @@ void Free_XML(Node* root) {
 			delete root;
 	}
 }
-
-void print_json(Node* root, int level) {
-	vector<vector<Node*>> s1;
-	//arranging
-	for (int i = 0; i < root->children.size(); i++) {
-		bool flag = false;
-		for (int j = 0; j < s1.size(); j++) {
-			if (s1[j][0]->TagName == root->children[i]->TagName) {
-				s1[j].push_back(root->children[i]);
-				flag = true;
+string erase_unwanted_chars(string str) {
+	vector<char> sequences = { '\a','\b','\r','\n','\v','\t'};
+	for (size_t i = 0; i < str.length(); ++i) {
+		for (char seq : sequences) {
+			if (str[i] == seq) {
+				str.erase(i,1);
+				while (str[i] == 32 && (str[i + 1] == ' ')) {
+					str.erase(i,2);
+				}
+				i--;
 				break;
 			}
 		}
-		if (flag == false) {
-			vector<Node*>n;
-			s1.push_back(n);
-			s1[s1.size() - 1].push_back(root->children[i]);
-		}
 	}
-	//printing
-	for (int i = 0; i < s1.size(); i++) {
-		if (s1[i].size() > 1) {
-			tab_spacing(level);
-			json_text.append("\""); json_text.append(s1[i][0]->TagName); json_text.append("\": [\n");//cout << "\"" << s1[i][0]->TagName << "\"" << ": [" << endl;
-			for (int j = 0; j < s1[i].size(); j++) {
-
-				if (s1[i][j]->TagValue.size() == 0) {
-					tab_spacing(level);
-					json_text.append("{\n");//cout << "{" << endl;
-					print_json(s1[i][j], level + 1);
-					tab_spacing(level);
-					json_text.append("}\n");//cout << "}" << endl;
-				}
-				else {
-					tab_spacing(level);
-                    json_text.append("\""); json_text.append(s1[i][j]->TagValue); json_text.append("\"\n");//cout << "\"" << s1[i][j]->TagValue << "\"" << endl;
-				}
-
-				if (j != s1[i].size() - 1) {
-					tab_spacing(level);
-					json_text.append(",\n");//cout << "," << endl;
-				}
-			}
-			tab_spacing(level);
-			json_text.append("]\n");//cout << "]" << endl;
-		}
-		else {
-			if (s1[i][0]->TagValue.size() == 0) {
-				tab_spacing(level);
-				json_text.append("\""); json_text.append(s1[i][0]->TagName); json_text.append("\": {\n"); //cout << "\"" << s1[i][0]->TagName << "\"" << ": {" << endl;
-				print_json(s1[i][0], level + 1);
-				tab_spacing(level);
-				json_text.append("}\n");//cout << "}" << endl;
-			}
-			else {
-				tab_spacing(level);
-				json_text.append("\""); json_text.append(s1[i][0]->TagName); json_text.append(": \""); json_text.append(s1[i][0]->TagValue); json_text.append("\"","\n"); //cout << "\"" << s1[i][0]->TagName + ": " << "\"" << s1[i][0]->TagValue << "\"" << "," << endl;
-			}
-		}
+	return str;
+}
+string convert_json(Node* node, int level) {
+	string json = "";
+	if (node->children.size() > 1) json += "\n" + insert_taps(level) + "\"" + node->TagName + "\":[\n" + insert_taps(level) + "{";
+	else if (node->children.size() == 1) json += "\n" + insert_taps(level) + "\"" + node->TagName + "\":{";
+	else if (node->children.size() == 0) 
+		json += "\n" + insert_taps(level) + "\"" + node->TagName + "\":\"" + erase_unwanted_chars(node->TagValue) + "\"";
+	for (int i = 0; i < node->children.size(); i++) {
+		json += traverse_tree(node->children[i], level + 1);
 	}
+	if (node->children.size() > 0) json += "\n" + insert_taps(level) + "}";
+	return json;
 }
 
-// print is used to call print_json function with some modification for the formating of json
-string convert_json(Node* root, int level) {
-	json_text.append("{\n");//cout << "{" << endl;
-	tab_spacing(level);
-	json_text.append("\""); json_text.append(root->TagName); json_text.append("\"{\n");//cout << "\"" << root->TagName << "\"" << "{" << endl;
-	print_json(root, 2);
-	tab_spacing(level);
-	json_text.append("}\n");//cout << "}" << endl;
-	json_text.append("}\n");//cout << "}" << endl;
-	return json_text;
-}
-
-//tab_spacing is to increase spacing for each line 
-void tab_spacing(int level) {
+string insert_taps(int level) {
+	string taps = "";
 	for (int i = 0; i < level; i++) {
-		json_text.append("\t");//cout << '\t';
+		taps += "\t";
 	}
+	return taps;
 }
+

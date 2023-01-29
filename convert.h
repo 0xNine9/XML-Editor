@@ -27,14 +27,12 @@ public:
 };
 
 
-void tab_spacing(int level);
 string readFileIntoString(const string& path);
 Node* Parse_XML(const string XML_content);
+string convert_json(Node* node, int level = 1);
 void Free_XML(Node* root);
-void DFS(Node* root);
-void print_json(Node* root, int level);
-string convert_json(Node* root, int level);
-void tab_spacing(int level);
+string insert_taps(int level);
+string erase_unwanted_chars(string str);
 
 
 #endif // !
