@@ -193,16 +193,21 @@ void MainWindow::on_actionCheck_triggered()
 {
     if(currentFile == ""){
         ui->textEdit->setText("<font color=\"#0008F0\"> Error: <font color=\"#000000\"> You have not opened a file");
-            return;
-        }
-        bool read;
-        string folder = currentFile.toLocal8Bit().constData();
-        vector<string> str = fileReader(&read, folder);
-        vector<QString> value = consistencyCheckCorrect(str);
-        if(value[0].size() == 0)
-            ui->textEdit->setText("<font color=\"#0008F0\"> Error: <font color=\"#000000\"> There were no errors to be corrected");
-        else
-            ui->textEdit->setText(value[0]);
+    }
+    bool read;
+    string folder = currentFile.toLocal8Bit().constData();
+    vector<string> str = fileReader(&read, folder);
+    vector<QString> value = consistencyCheckCorrect(str);
+    QFile file("sample_corrected.xml");
+    if(!file.open(QIODevice::ReadOnly | QFile::Text)){
+        QMessageBox::warning(this, "Warning", "Cannot open file : " + file.errorString());
+        return;
+    }
+    QTextStream in(&file);
+    QString text = in.readAll();
+    if(value[0].size() == 0)
+        ui->textEdit->setText("<font color=\"#0008F0\"> Error: <font color=\"#000000\"> There were no errors to be corrected");
+    else
         ui->textEdit->setText(value[1]);
 
 }
