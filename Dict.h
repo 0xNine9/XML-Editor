@@ -2,7 +2,7 @@
 #include<string>
 #include<iostream>
 #include<vector>
-#include "HashTable.h"
+#include "Util.h"
 namespace std {
 	template <class T> class Dict {
 	protected:
@@ -10,7 +10,8 @@ namespace std {
 		vector<T> values;
 		int findKeyIndex(string key);
 	public:
-		Dict();
+
+        Dict();
 		bool contain(string key);
 		void append(string key, T value = 1);
 		T get(string key, T def_val = 1);
@@ -23,7 +24,7 @@ namespace std {
 		static string replace(string str, Dict<char> dict, char sep=' ');
 		static string replace(string str, Dict<string> dict, char sep = ' ');
 	};
-	template <class T> Dict<T>::Dict<T>(){}
+    template <class T> Dict<T>::Dict(){}
 	template <class T> string Dict<T>::replace(string str, Dict<char> dict, char sep) {
 		string replacedStr = (str[0] == sep) ? string(1, sep) : "";
 		// if seprator is first character in the string add it otherwise assign to null

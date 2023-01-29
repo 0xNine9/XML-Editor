@@ -1,11 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Compression.h"
+#include <string>
+#include "convert.h"
+#include "formatter.h"
+#include "consistency.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle("XML Editor");
     ui->textEdit->setPlaceholderText(QString("Write XML Here..."));
     setCentralWidget(ui->textEdit);
 }
@@ -109,6 +115,34 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     QApplication:: quit();
+}
+
+
+
+
+
+
+void MainWindow::on_actionCompress_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Compress");
+    std::compress_file(fileName.toStdString());
+}
+
+
+void MainWindow::on_actionDecompress_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Decompress");
+    std::decompress_file(fileName.toStdString());
+}
+
+
+void MainWindow::on_actionConvert_to_JSON_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Compress");
+    std::string file_content = std::readFileBytes(fileName.toStdString());
+    Node* xml_tree = Parse_XML(file_content);
+    ui->textEdit->setText(QString::fromStdString(convert_json(xml_tree)));
+
 }
 
 
