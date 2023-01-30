@@ -9,11 +9,28 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CharFrequencyTable.cpp \
+    Compression.cpp \
+    FrequencyTable.cpp \
+    Util.cpp \
+    WordFrequencyTable.cpp \
+    consistency.cpp \
+    formatter.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tree.cpp
 
 HEADERS += \
-    mainwindow.h
+    CharFrequencyTable.h \
+    Compression.h \
+    Dict.h \
+    FrequencyTable.h \
+    Util.h \
+    WordFrequencyTable.h \
+    consistency.h \
+    formatter.h \
+    mainwindow.h \
+    tree.h
 
 FORMS += \
     mainwindow.ui

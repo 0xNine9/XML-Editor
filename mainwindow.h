@@ -31,6 +31,18 @@ private slots:
 
     void on_actionSave_triggered();
 
+    void on_actionCompress_triggered();
+
+    void on_actionDecompress_triggered();
+
+    void on_actionConvert_to_JSON_triggered();
+
+    void on_actionFormat_triggered();
+
+    void on_actionCheck_triggered();
+
+    void on_actionMinify_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString currentFile = "";

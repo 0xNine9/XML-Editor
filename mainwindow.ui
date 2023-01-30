@@ -54,8 +54,12 @@
      <string>Options</string>
     </property>
     <addaction name="actionFormat"/>
+    <addaction name="actionMinify"/>
     <addaction name="actionCompress"/>
+    <addaction name="actionDecompress"/>
     <addaction name="actionConvert_to_JSON"/>
+    <addaction name="actionCheck"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -119,7 +123,7 @@
      <normaloff>:/Images/Format.png</normaloff>:/Images/Format.png</iconset>
    </property>
    <property name="text">
-    <string>Format</string>
+    <string>Prittify</string>
    </property>
   </action>
   <action name="actionAbout_US">
@@ -147,6 +151,26 @@
    </property>
    <property name="text">
     <string>New</string>
+   </property>
+  </action>
+  <action name="actionCheck">
+   <property name="text">
+    <string>Validation</string>
+   </property>
+  </action>
+  <action name="actionBeautify">
+   <property name="text">
+    <string>Beautify</string>
+   </property>
+  </action>
+  <action name="actionDecompress">
+   <property name="text">
+    <string>Decompress</string>
+   </property>
+  </action>
+  <action name="actionMinify">
+   <property name="text">
+    <string>Minify</string>
    </property>
   </action>
  </widget>

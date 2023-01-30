@@ -21,22 +21,7 @@ namespace std {
         }
         return encodedWords;
     }
-    string readFileBytes(const string& fileName) {
-        ifstream file(fileName, ios::binary);
-        string fileContent;
-        char buffer;
-        while (file.read(&buffer, sizeof(buffer))) {
-            fileContent.push_back(buffer);
-        }
-        return fileContent;
-    }
-    void writeFileBytes(const string& fileName, const string& content) {
-        ofstream file(fileName, ios::binary);
-        for (unsigned char ch : content) {
-            file.write(reinterpret_cast<const char*>(&ch), sizeof(ch));
-        }
-        file.close();
-    }
+
     string decompress(string str) {
         char special_char = str[0];
         Dict<string> decoder;
@@ -77,7 +62,8 @@ namespace std {
     void decompress_file(string file_name) {
         string str = readFileBytes(file_name);
         string decomp_str = decompress(str);
-        writeFileBytes("Decompressed_" + file_name, decomp_str);
+
+        writeFileBytes("Decompressed_file.xml", decomp_str);
     }
     void compress_file(string file_name) {
         string str = readFileBytes(file_name);
@@ -85,7 +71,7 @@ namespace std {
         CharFrequencyTable charFreqTable(str);
         Dict<char> encodedWords = encodeFrequentWords(charFreqTable, wordFreqTable);
         string comp_str = compress(encodedWords, str);
-        writeFileBytes("Compressed_" + file_name, comp_str);
+        writeFileBytes("Compressed_file.xml", comp_str);
     }
 
 }

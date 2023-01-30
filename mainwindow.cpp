@@ -2,10 +2,13 @@
 #include "ui_mainwindow.h"
 #include "Compression.h"
 #include <string>
-#include "convert.h"
+#include "tree.h"
 #include "formatter.h"
 #include "consistency.h"
 
+std::string xml_file = "";
+std::string xml_text = "";
+Node* xml_tree;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -28,6 +31,7 @@ void MainWindow::on_actionNew_triggered()
     currentFile.clear();
     ui->textEdit->clear();
     ui->textEdit->setPlaceholderText(QString("Write Your New XML here"));
+
 }
 
 
@@ -56,7 +60,11 @@ void MainWindow::on_actionOpen_triggered()
         QTextStream in(&file);
 
         // Copy text in the string
-        QString text = in.readAll();
+            QString text = in.readAll();
+            xml_file = fileName.toStdString();
+            xml_text = text.toStdString();
+            xml_tree = Parse_XML(xml_text);
+            // Put the text in the textEdit wi
 
         // Put the text in the textEdit widget
         ui->textEdit->setText(text);
@@ -124,24 +132,41 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionCompress_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Compress");
-    std::compress_file(fileName.toStdString());
+    if(xml_file == ""){
+            QString fileName = QFileDialog::getOpenFileName(this, "Compress");
+            std::compress_file(fileName.toStdString());
+        }
+        else{
+            std::compress_file(xml_file);
+        }
 }
 
 
 void MainWindow::on_actionDecompress_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Decompress");
-    std::decompress_file(fileName.toStdString());
+    if(xml_file == ""){
+            QString fileName = QFileDialog::getOpenFileName(this, "Decompress");
+            std::compress_file(fileName.toStdString());
+        }
+        else{
+            std::decompress_file(xml_file);
+        }
 }
 
 
 void MainWindow::on_actionConvert_to_JSON_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Compress");
-    std::string file_content = std::readFileBytes(fileName.toStdString());
-    Node* xml_tree = Parse_XML(file_content);
-    ui->textEdit->setText(QString::fromStdString(convert_json(xml_tree)));
+    if(xml_file == ""){
+        QString fileName = QFileDialog::getOpenFileName(this, "Compress");
+        std::string file_content = std::readFileBytes(fileName.toStdString());
+        Node* xml_tree = Parse_XML(file_content);
+        std::string json = "{" + convert_json(xml_tree) + "\n}";
+        ui->textEdit->setText(QString::fromStdString(json));
+        }
+        else{
+            std::string json = "{" + convert_json(xml_tree) + "\n}";
+            ui->textEdit->setText(QString::fromStdString(json));
+        }
 
 }
 
@@ -149,43 +174,43 @@ void MainWindow::on_actionConvert_to_JSON_triggered()
 void MainWindow::on_actionFormat_triggered()
 {
     if(currentFile == ""){
-        // Opens a dialog that allows you to select a file to open
-            QString fileName = QFileDialog::getOpenFileName(this, "Choose a file");
+            // Opens a dialog that allows you to select a file to open
+                QString fileName = QFileDialog::getOpenFileName(this, "Choose a file");
 
-            // An object for reading and writing files
-            QFile file(fileName);
+                // An object for reading and writing files
+                QFile file(fileName);
 
-            // Store the currentFile name
-            currentFile = fileName;
+                // Store the currentFile name
+                currentFile = fileName;
 
-            // Try to open the file as a read only file if possible or display a
-            // warning dialog box
-            if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
-                QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
-                return;
-            }
+                // Try to open the file as a read only file if possible or display a
+                // warning dialog box
+                if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+                    QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
+                    return;
+                }
 
-            // Set the title for the window to the file name
-            setWindowTitle(fileName);
+                // Set the title for the window to the file name
+                setWindowTitle(fileName);
 
-            // Interface for reading text
-            QTextStream in(&file);
+                // Interface for reading text
+                QTextStream in(&file);
 
-            // Copy text in the string
-            QString text = in.readAll();
+                // Copy text in the string
+                QString text = in.readAll();
 
+                QByteArray array = currentFile.toLocal8Bit();
+                    const char *buffer = array.data();
+                    QString textf = QString::fromStdString(prettify(buffer));
+                    ui->textEdit->setText(textf);
+
+                // Close the file
+                file.close();
+        }
             QByteArray array = currentFile.toLocal8Bit();
                 const char *buffer = array.data();
-                QString textf = QString::fromStdString(xml_formatter(buffer));
-                ui->textEdit->setText(textf);
-
-            // Close the file
-            file.close();
-    }
-        QByteArray array = currentFile.toLocal8Bit();
-            const char *buffer = array.data();
-            QString text = QString::fromStdString(xml_formatter(buffer));
-            ui->textEdit->setText(text);
+                QString text = QString::fromStdString(prettify(buffer));
+                ui->textEdit->setText(text);
 }
 
 
@@ -210,5 +235,21 @@ void MainWindow::on_actionCheck_triggered()
     else
         ui->textEdit->setText(value[1]);
 
+}
+
+
+void MainWindow::on_actionMinify_triggered()
+{
+    if(xml_file == ""){
+        QString fileName = QFileDialog::getOpenFileName(this, "Minify");
+        std::string file_content = std::readFileBytes(fileName.toStdString());
+        Node* xml_tree = Parse_XML(file_content);
+        std::string minified_xml = std::minify(xml_tree);
+        ui->textEdit->setText(QString::fromStdString(minified_xml));
+        }
+        else{
+            std::string minified_xml = std::minify(xml_tree);
+            ui->textEdit->setText(QString::fromStdString(minified_xml));
+        }
 }
 

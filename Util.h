@@ -1,6 +1,10 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include<sstream>
 //#include "Dict.h"
 //template <typename T>T sum(std::vector<T> nums);
 //template <typename T>T sum(std::vector<T> nums);}
@@ -20,6 +24,8 @@ namespace std
     int nextPrime(int num);
     bool isPrime(int num);
     string erase_unwanted_chars(string str);
-    string format_newLine(string str, int level, int maxChar = 50);
+    string format_newLine(string str, int level, int maxChar = 75);
     string insert_taps(int level);
+    string readFileBytes(const string& fileName);
+    void writeFileBytes(const string& fileName, const string& content);
 }
