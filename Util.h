@@ -19,4 +19,7 @@ namespace std
     //string replace(string str, Dict<char> dict,char sep = ' ');
     int nextPrime(int num);
     bool isPrime(int num);
+    string erase_unwanted_chars(string str);
+    string format_newLine(string str, int level, int maxChar = 50);
+    string insert_taps(int level);
 }

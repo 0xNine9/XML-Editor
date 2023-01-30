@@ -1,8 +1,17 @@
 #include "formatter.h"
 
-using namespace std;
+namespace std
+{
 
-string xml_formatter(const char* s)
+string minify(Node* node) {
+    string minified_xml = "<" + node->TagName + ">";
+    for (int i = 0; i < node->children.size(); i++) {
+        minified_xml += minify(node->children[i]);
+    }
+    minified_xml += erase_unwanted_chars(node->TagValue) + "</" + node->TagName + ">";
+    return minified_xml;
+    }
+string prettify(const char* s)
 {
     string line;
     ifstream in(s);
@@ -69,6 +78,19 @@ string xml_formatter(const char* s)
         output = output + tokens[i] + "\n";
     return output;
 
+    }
+string convert_json(Node* node, int level) {
+    string json = "";
+    if (node->children.size() > 1) json += "\n" + insert_taps(level) + "\"" + node->TagName + "\":[\n" + insert_taps(level) + "{";
+    else if (node->children.size() == 1) json += "\n" + insert_taps(level) + "\"" + node->TagName + "\":{";
+    else if (node->children.size() == 0)
+        json += "\n" + insert_taps(level) + "\"" + node->TagName + "\":\"" + format_newLine(erase_unwanted_chars(node->TagValue), level) + "\"";
+    for (int i = 0; i < node->children.size(); i++) {
+        json += convert_json(node->children[i], level + 1);
+    }
+    if (node->children.size() > 0) json += "\n" + insert_taps(level) + "}";
+    return json;
+    }
 }
 
 
