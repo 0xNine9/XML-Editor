@@ -26,8 +26,19 @@ This is a Qt-based main window application for XML file editing. It allows you t
     6. Choose the "Decompress" option in the "Edit" menu to decompress the current XML file.
     7. Choose the "Convert to JSON" option in the "Edit" menu to convert the current XML file to JSON.
     8. Choose the "Exit" option in the "File" menu to exit the application.
-You can find a short demo in [here](https://drive.google.com/drive/folders/1bTCNUiJa6xAfqMQF5LiEZuhSYPcjPOXm?usp=share_link)
+A short demo for the project can be found in [here](https://drive.google.com/drive/folders/1bTCNUiJa6xAfqMQF5LiEZuhSYPcjPOXm?usp=share_link)
 
+## Code Overview
+The application consists of two main files:
+
+    - mainwindow.h: This is the header file that declares the main window class and its functions.
+    - mainwindow.cpp: This is the implementation file that contains the definitions of the functions declared in the header file.
+
+The functions in the mainwindow.cpp file handle the different operations in the application such as creating a new file, opening an existing file, saving a file, compressing, decompressing and converting to JSON.
+
+The code uses the Qt framework and standard C++ libraries to handle file operations, GUI elements and other related tasks.
+
+A deatailed reprot of the project can be found [here](https://drive.google.com/drive/folders/1bTCNUiJa6xAfqMQF5LiEZuhSYPcjPOXm?usp=share_link)
 ## Contributors
 
 The following individuals have contributed to this project:
@@ -59,4 +70,5 @@ The technologies used in this project include (include relevant technologies):
 - Validation
 - Formatting
 
-
+## Conclusoin
+This XML Editor application is a simple tool that can be used to edit XML files with ease. With its user-friendly interface and various functionalities, it provides an efficient and convenient way to work with XML files.
