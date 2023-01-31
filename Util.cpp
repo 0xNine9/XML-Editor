@@ -19,7 +19,7 @@ namespace std
                 continue;
             }
             word += c;
-            if(i == str.size() - 1) 
+            if(i == str.size() - 1)
                 strList.push_back(word);
         }
         return strList;
@@ -31,10 +31,15 @@ namespace std
         }
         return taps;
     }
-    string erase_unwanted_chars(string str) {
+    string erase_unwanted_chars(string str,bool erase_white_space) {
         vector<char> sequences = { '\a','\b','\r','\n','\v','\t' };
         for (int i = 0; i < str.length(); ++i) {
             for (char seq : sequences) {
+                if (erase_white_space) {
+                    while (str[i] == ' ' && (str[i + 1] == ' ')) {
+                        str.erase(i, 2);
+                    }
+                }
                 if (str[i] == seq) {
                     str.erase(i, 1);
                     while (str[i] == ' ' && (str[i + 1] == ' ')) {
@@ -64,6 +69,22 @@ namespace std
         }
         return new_str;
     }
+    string readFileBytes(const string& fileName) {
+        ifstream file(fileName, ios::binary);
+        string fileContent;
+        char buffer;
+        while (file.read(&buffer, sizeof(buffer))) {
+            fileContent.push_back(buffer);
+        }
+        return fileContent;
+    }
+    void writeFileBytes(const string& fileName, const string& content) {
+        ofstream file(fileName, ios::binary);
+        for (unsigned char ch : content) {
+            file.write(reinterpret_cast<const char*>(&ch), sizeof(ch));
+        }
+        file.close();
+    }
     int nextPrime(int num) {
         while (true) {
             if (isPrime(++num)) return num;
@@ -74,22 +95,5 @@ namespace std
             if (num % i == 0) return false;
         return true;
     }
-    string readFileBytes(const string& fileName) {
-            ifstream file(fileName, ios::binary);
-            string fileContent;
-            char buffer;
-            while (file.read(&buffer, sizeof(buffer))) {
-                fileContent.push_back(buffer);
-            }
-            return fileContent;
-        }
-        void writeFileBytes(const string& fileName, const string& content) {
-            ofstream file(fileName, ios::binary);
-            for (unsigned char ch : content) {
-                file.write(reinterpret_cast<const char*>(&ch), sizeof(ch));
-            }
-            file.close();
-        }
-
 }
 
