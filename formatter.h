@@ -7,12 +7,15 @@
 #include <sstream>
 #include <vector>
 #include <stack>
+#include <list>
+#include <iterator>
 #include "tree.h"
 #include "Util.h"
 namespace std {
-	string prettify(const char* s);
-	string minify(Node* node);
-	string convert_json(Node* node, int level = 1);
+    string minify(Node* node);
+    string prettify(Node* node, int level = 0);
+    string convert_json(Node* node, int level = 1);
+    string validate(string xml_text);
 }
 
 
