@@ -26,7 +26,7 @@ This is a Qt-based main window application for XML file editing. It allows you t
     6. Choose the "Decompress" option in the "Edit" menu to decompress the current XML file.
     7. Choose the "Convert to JSON" option in the "Edit" menu to convert the current XML file to JSON.
     8. Choose the "Exit" option in the "File" menu to exit the application.
-you can find a short demo in [here](https://drive.google.com/drive/folders/1bTCNUiJa6xAfqMQF5LiEZuhSYPcjPOXm?usp=share_link)
+You can find a short demo in [here](https://drive.google.com/drive/folders/1bTCNUiJa6xAfqMQF5LiEZuhSYPcjPOXm?usp=share_link)
 
 ## Contributors
 
