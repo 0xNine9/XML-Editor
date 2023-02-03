@@ -7,8 +7,8 @@ using namespace std;
 #include <string>
 #include <fstream>
 #include <iomanip>
-#include "Util.h"
 //string json_text;
+
 
 class Node {
 public:
@@ -23,7 +23,8 @@ public:
 	~Node() {
 		// cout << "destructor"<<endl;
 	}
+	static Node* Parse_XML(const string XML_content);
+	static void Free_XML(Node* root);
 };
-Node* Parse_XML(const string XML_content);
-void Free_XML(Node* root);
+
 

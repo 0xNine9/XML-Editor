@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Node* Parse_XML(const string XML_content) {
+Node* Node::Parse_XML(const string XML_content) {
 	// store the root node in order to delete all the nodes after parsing 
 	Node* root = new Node();
 	Node* curr_node = root;
@@ -80,7 +80,7 @@ Node* Parse_XML(const string XML_content) {
 }
 
 // freeing all the XML tree allocated nodes
-void Free_XML(Node* root) {
+void  Node::Free_XML(Node* root) {
 	if (root) {
 		for (auto& child : root->children) {
 			Free_XML(child);
