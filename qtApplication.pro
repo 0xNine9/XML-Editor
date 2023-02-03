@@ -10,25 +10,30 @@ CONFIG += c++11
 
 SOURCES += \
     CharFrequencyTable.cpp \
-    Compression.cpp \
+    Compressor.cpp \
+    FileHandler.cpp \
     FrequencyTable.cpp \
-    Util.cpp \
+    SString.cpp \
+    SocialNetwork.cpp \
+    User.cpp \
     WordFrequencyTable.cpp \
-    consistency.cpp \
-    formatter.cpp \
+    XmlEditor.cpp \
     main.cpp \
     mainwindow.cpp \
     tree.cpp
 
 HEADERS += \
     CharFrequencyTable.h \
-    Compression.h \
+    Compressor.h \
     Dict.h \
+    FileHandler.h \
     FrequencyTable.h \
-    Util.h \
+    SString.h \
+    SocialNetwork.h \
+    User.h \
     WordFrequencyTable.h \
-    consistency.h \
-    formatter.h \
+    XmlEditor.h \
+    convert.h \
     mainwindow.h \
     tree.h
 
